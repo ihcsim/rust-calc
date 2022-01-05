@@ -1,3 +1,4 @@
+use enum_iterator::IntoEnumIterator;
 use std::fmt;
 use std::str::FromStr;
 
@@ -23,7 +24,7 @@ impl Operation {
     }
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, IntoEnumIterator)]
 pub enum Operator {
     Add,
     Subtract,
@@ -428,6 +429,21 @@ mod test {
             let operators = vec![Operator::Add, Operator::Subtract, Operator::Multiply];
             for operator in operators.iter() {
                 operator.divide(1.0, 1.0).unwrap();
+            }
+        }
+
+        #[test]
+        fn can_iterator() {
+            assert_eq!(Operator::VARIANT_COUNT, 5);
+            let mut iter = Operator::into_enum_iter();
+            for expected in vec![
+                Operator::Add,
+                Operator::Subtract,
+                Operator::Multiply,
+                Operator::Divide,
+                Operator::None,
+            ] {
+                assert_eq!(Some(expected), iter.next());
             }
         }
     }

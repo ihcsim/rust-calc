@@ -1,22 +1,26 @@
 mod calc;
 
 use calc::op;
+use enum_iterator::IntoEnumIterator;
 use std::io::{self, Write};
 
 fn usage() {
-    let usage = format!(
-        "Supported operators: [{}, {}, {}, {}]",
-        op::Operator::Add,
-        op::Operator::Subtract,
-        op::Operator::Multiply,
-        op::Operator::Divide
-    );
+    let mut operators = String::new();
+    for operator in op::Operator::into_enum_iter() {
+        if operator == op::Operator::None {
+            continue;
+        }
+
+        operators.push_str(operator.to_string().as_str());
+        operators.push_str(",")
+    }
+
+    let usage = format!("Supported operators: [{}]", operators);
     println!("{}", usage);
 }
 
 fn main() {
     println!("Type '?' to see supported operators, 'q' to quit");
-
     loop {
         print!("# ");
         io::stdout().flush().unwrap();
