@@ -41,15 +41,19 @@ fn main() {
             }
             _ => {
                 let mut operation = op::Operation::default();
-                for c in trimmed.chars() {
-                    if let Ok(v) = c.to_string().parse::<f64>() {
-                        operation.operands.push(v);
-                        continue;
-                    }
 
-                    if let Ok(o) = c.to_string().parse::<op::Operator>() {
-                        operation.operator = o;
-                    }
+                for op in op::Operator::into_enum_iter() {
+                    match trimmed.find(|c: char| c.to_string() == op.to_string()) {
+                        Some(i) => {
+                            let operand1 = trimmed[0..i].trim().parse().unwrap();
+                            let operand2 = trimmed[i + 1..].trim().parse().unwrap();
+                            operation.operands.push(operand1);
+                            operation.operands.push(operand2);
+                            operation.operator = op;
+                            break;
+                        }
+                        None => println!("got nothing"),
+                    };
                 }
 
                 match operation.exec() {
