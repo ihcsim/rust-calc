@@ -50,16 +50,17 @@ fn main() {
                             operation.operands.push(operand1);
                             operation.operands.push(operand2);
                             operation.operator = op;
+
+                            match operation.exec() {
+                                Ok(v) => result.push_str(v.to_string().as_str()),
+                                Err(e) => result.push_str(e.to_string().as_str()),
+                            };
+
                             break;
                         }
-                        None => println!("got nothing"),
+                        None => {}
                     };
                 }
-
-                match operation.exec() {
-                    Ok(v) => result.push_str(v.to_string().as_str()),
-                    Err(e) => result.push_str(e.to_string().as_str()),
-                };
             }
         }
 

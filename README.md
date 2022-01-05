@@ -15,7 +15,27 @@ I wrote this program as part of my learning of important conceptslike:
 To run the program:
 
 ```sh
-cargo run
+# q
+➜ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/rust-calc`
+Type '?' to see supported operators, 'q' to quit
+# ?
+Supported operators: [+,-,*,/,]
+# 1.0+2.0
+> 3
+# 3.0-9.0
+> -6
+# 4.5  / 4.5
+> 1
+# 6.0 / 3.0
+> 2
+# 6.0*9.0
+> 54
+# 1.3456*9.728
+> 13.089996799999998
+# q
+➜
 ```
 
 To run the unit tests:
