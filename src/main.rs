@@ -45,11 +45,19 @@ fn main() {
                 for op in op::Operator::into_enum_iter() {
                     match trimmed.find(|c: char| c.to_string() == op.to_string()) {
                         Some(i) => {
-                            let operand1 = trimmed[0..i].trim().parse().unwrap();
-                            let operand2 = trimmed[i + 1..].trim().parse().unwrap();
-                            operation.operands.push(operand1);
-                            operation.operands.push(operand2);
-                            operation.operator = op;
+                            match (
+                                trimmed[0..i].trim().parse(),
+                                trimmed[i + 1..].trim().parse(),
+                            ) {
+                                (Ok(operand1), Ok(operand2)) => {
+                                    operation.operands.push(operand1);
+                                    operation.operands.push(operand2);
+                                    operation.operator = op;
+                                }
+
+                                (Err(e), _) => println!("error parsing 1st operand: {}", e),
+                                (_, Err(e)) => println!("error parsing 2nd operand: {}", e),
+                            }
 
                             match operation.exec() {
                                 Ok(v) => result.push_str(v.to_string().as_str()),
